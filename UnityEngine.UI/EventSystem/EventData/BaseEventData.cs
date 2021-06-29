@@ -2,6 +2,7 @@ namespace UnityEngine.EventSystems
 {
     /// <summary>
     /// A class that can be used for sending simple events via the event system.
+    /// 发送的事件数据基类
     /// </summary>
     public abstract class AbstractEventData
     {
@@ -28,6 +29,7 @@ namespace UnityEngine.EventSystems
 
         /// <summary>
         /// Is the event used?
+        /// 是否使用了这个事件?
         /// </summary>
         public virtual bool used
         {

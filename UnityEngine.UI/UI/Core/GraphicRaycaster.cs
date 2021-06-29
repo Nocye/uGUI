@@ -263,7 +263,7 @@ namespace UnityEngine.UI
                     if (distance >= hitDistance)
                         continue;
 
-                    var castResult = new RaycastResult
+                    RaycastResult castResult = new RaycastResult
                     {
                         gameObject = go,
                         module = this,

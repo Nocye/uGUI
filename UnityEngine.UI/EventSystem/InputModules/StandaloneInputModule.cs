@@ -446,7 +446,7 @@ namespace UnityEngine.EventSystems
             if (eventSystem.currentSelectedGameObject == null)
                 return false;
 
-            var data = GetBaseEventData();
+            BaseEventData data = GetBaseEventData();
             if (input.GetButtonDown(m_SubmitButton))
                 ExecuteEvents.Execute(eventSystem.currentSelectedGameObject, data, ExecuteEvents.submitHandler);
 
@@ -496,19 +496,21 @@ namespace UnityEngine.EventSystems
             bool similarDir = (Vector2.Dot(movement, m_LastMoveVector) > 0);
 
             // If direction didn't change at least 90 degrees, wait for delay before allowing consequtive event.
+            // 检测是否相似方向,检测当前时间,如果小于等待重复按键的延迟,或者不是相似方向.就返回继续等待
             if (similarDir && m_ConsecutiveMoveCount == 1)
             {
                 if (time <= m_PrevActionTime + m_RepeatDelay)
                     return false;
             }
             // If direction changed at least 90 degree, or we already had the delay, repeat at repeat rate.
+            // 非相似方向返回. 连续移动时,限制为不能超过1秒10次
             else
             {
                 if (time <= m_PrevActionTime + 1f / m_InputActionsPerSecond)
                     return false;
             }
 
-            var axisEventData = GetAxisEventData(movement.x, movement.y, 0.6f);
+            AxisEventData axisEventData = GetAxisEventData(movement.x, movement.y, 0.6f);
 
             if (axisEventData.moveDir != MoveDirection.None)
             {
@@ -571,7 +573,7 @@ namespace UnityEngine.EventSystems
             if (eventSystem.currentSelectedGameObject == null)
                 return false;
 
-            var data = GetBaseEventData();
+            BaseEventData data = GetBaseEventData();
             ExecuteEvents.Execute(eventSystem.currentSelectedGameObject, data, ExecuteEvents.updateSelectedHandler);
             return data.used;
         }
@@ -581,8 +583,8 @@ namespace UnityEngine.EventSystems
         /// </summary>
         protected void ProcessMousePress(MouseButtonEventData data)
         {
-            var pointerEvent = data.buttonData;
-            var currentOverGo = pointerEvent.pointerCurrentRaycast.gameObject;
+            PointerEventData pointerEvent = data.buttonData;
+            GameObject currentOverGo = pointerEvent.pointerCurrentRaycast.gameObject;
 
             // PointerDown notification
             if (data.PressedThisFrame())
